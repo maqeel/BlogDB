@@ -1,0 +1,24 @@
+CREATE USER docker;
+ALTER USER docker WITH SUPERUSER;
+CREATE DATABASE blogdb;
+\c blogdb
+
+CREATE TABLE Users(
+   id SERIAL PRIMARY KEY,
+   username VARCHAR (20) UNIQUE NOT NULL,
+   email VARCHAR (120) UNIQUE NOT NULL,
+   image_file VARCHAR(20) DEFAULT 'default.jpg',
+   password VARCHAR (255) NOT NULL
+);
+
+CREATE TABLE Post(
+   id SERIAL PRIMARY KEY,
+   title VARCHAR (100) NOT NULL,
+   date_posted date NOT NULL DEFAULT CURRENT_DATE,
+   content VARCHAR UNIQUE NOT NULL,
+   user_id INTEGER,
+   FOREIGN KEY (user_id) REFERENCES Users (id)
+);
+
+
+GRANT ALL PRIVILEGES ON DATABASE blogdb TO docker;
